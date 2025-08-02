@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fashion Crowdfunding</title>
+  <link rel="stylesheet" href="{% static 'home.css' %}" />
+</head>
+<body>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="overlay">
+      <h1>Wear the Change<br />You Want to See</h1>
+      <p>
+        Join us in building a sustainable, ethical fashion brand<br />
+        made with love and purpose.
+      </p>
+      <a href="#rewards" class="cta-button" tabindex="-1">Support Us Now</a>
+    </div>
+  </section>
+
+  <!-- MISSION SECTION -->
+  <section class="mission-section">
+    <div class="mission-content">
+      <div class="mission-text">
+        <h2>Our Mission</h2>
+        <p>
+          We're creating a fashion label focused on sustainable materials,
+          ethical production, and timeless style. Your support helps us launch
+          our first full collection and uplift local artisans.
+        </p>
+      </div>
+      <div class="mission-image">
+        <img src="{% static 'images/fabric.png' %}" alt="Stack of sustainable fabrics" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- REWARDS SECTION -->
+  <section id="rewards" class="rewards-section">
+    <h2 class="section-title">Reward Tiers</h2>
+    <div class="reward-list">
+      {% for reward in rewards %}
+        <a href="{% url 'reward_detail' reward.id %}" class="reward-card">
+          {% if reward.image %}
+            <img src="{{ reward.image.url }}" alt="{{ reward.title|escape }}" loading="lazy" />
+          {% endif %}
+          <h3>{{ reward.title|escape }}</h3>
+          <p class="reward-amount">₹{{ reward.amount }}</p>
+          <p class="click-hint">Click to view full details</p>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <noscript>
+    <p>This UPI link works best on mobile UPI apps like GPay or PhonePe.</p>
+  </noscript>
+
+  <!-- GALLERY SECTION -->
+  <section class="gallery-section">
+    <h2 class="section-title">Our Creations</h2>
+    <div class="gallery-container">
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion3.png' %}" alt="Fashion creation 1" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion1.png' %}" alt="Fashion creation 2" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion7.png' %}" alt="Fashion creation 3" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion2.png' %}" alt="Fashion creation 4" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion5.png' %}" alt="Fashion creation 5" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion6.png' %}" alt="Fashion creation 6" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion4.png' %}" alt="Fashion creation 7" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion8.png' %}" alt="Fashion creation 8" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion9.png' %}" alt="Fashion creation 9" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion10.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion11.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion12.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion13.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion14.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion15.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion16.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion17.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion18.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion19.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="{% static 'images/fashion20.png' %}" alt="Fashion creation 10" onclick="openModal(this)" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <img id="modal-img" class="modal-img" alt="Expanded view" />
+  </div>
+
+  <!-- FAQs SECTION -->
+  <section class="faq-section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">What is this crowdfunding campaign for?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            We are raising funds to launch our sustainable, ethically made fashion line. The support will help us with fabric sourcing, fair-wage production, eco-packaging, and product development.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">Why should I support this project?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            By backing us, you’re supporting ethical fashion, independent creators, and a shift toward conscious consumerism. Your support helps turn a dream into a movement.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">Do I get a reward for contributing?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>Yes! Every tier comes with exciting perks like:</p>
+          <ul>
+            <li>Public shoutouts</li>
+            <li>Early access to the collection</li>
+            <li>Discount codes</li>
+            <li>Exclusive limited-edition clothing items</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">Is there a minimum contribution?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            You can contribute any amount, but rewards start at ₹100. Every rupee helps us get closer to launching ethically and sustainably.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">When will I receive my reward?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            You’ll receive your reward within 6 to 8 weeks after the campaign ends, depending on the tier and item.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">What happens if the funding goal isn’t met?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            We’re using a flexible funding model, so every contribution helps. Even if we don’t reach 100%, funds will still go toward production and early releases.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">Can I share this campaign with others?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            Yes, please do! Sharing our campaign with friends, family, and on social media helps us grow our movement.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-button" aria-expanded="false">
+          <span class="accordion-title">Who’s behind this brand?</span>
+          <span class="icon" aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            We’re a passionate team of designers, entrepreneurs, and sustainability advocates who believe fashion can be beautiful and responsible.
+          </p>
+        </div>
+      </div>
+
+      <!-- Add more FAQ items as needed -->
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h2>Contact Us</h2>
+      <p>Have questions or want to collaborate?</p>
+      <p>
+        <a href="mailto:support@yourbrand.com" class="email">support@yourbrand.com</a>
+      </p>
+      <div id="quote-container" class="quote">
+        ‘Style with purpose. Fashion with impact.’
+      </div>
+      <div class="copyright">
+        &copy; {{ now.year }} YourBrand. All rights reserved.
+      </div>
+    </div>
+  </footer>
+  <!-- For animated cursor -->
+  <div class="custom-cursor"></div>
+
+  <script src="{% static 'script.js' %}" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // give the browser a moment to apply its default focus…
+    setTimeout(() => {
+      // focus the <body> (which has tabindex="-1")
+      document.body.focus();
+    }, 50);
+  });
+  </script>
+</body>
+</html>

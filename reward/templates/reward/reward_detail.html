@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>{{ reward.title }}</title>
+ <link rel="stylesheet" href="{% static 'home.css' %}">
+ <style>
+   .popup {
+     position: fixed;
+     top: 0; left: 0; right: 0; bottom: 0;
+     background: rgba(0,0,0,0.6);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000;
+   }
+   .popup-content {
+     background: white;
+     padding: 2rem;
+     border-radius: 10px;
+     text-align: center;
+   }
+   .qr-img { width: 200px; margin-top: 10px; }
+   .submit-btn, .support-btn, .upi-button {
+     background: #000; color: #fff;
+     border: none; padding: 10px 20px;
+     cursor: pointer; border-radius: 5px;
+   }
+   input { display: block; margin: 10px 0; padding: 8px; width: 100%; max-width: 300px; }
+   .social-share a { text-decoration: none; margin: 0 10px; color: #333; }
+ </style>
+  
+ <script>
+   function scrollToPayment() {
+     document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+   }
+
+
+   function copyText(id) {
+     const text = document.getElementById(id).innerText;
+     navigator.clipboard.writeText(text).then(() => {
+       alert("Copied to clipboard!");
+     });
+   }
+
+
+   function closePopup() {
+     document.getElementById("thank-you-popup").style.display = "none";
+   }
+
+
+   document.addEventListener("DOMContentLoaded", function () {
+     const form = document.getElementById("support-form");
+     form.addEventListener("submit", async function (e) {
+       e.preventDefault();
+
+
+       const formData = new FormData(form);
+       const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+       const response = await fetch("", {
+         method: "POST",
+         headers: { 'X-CSRFToken': csrfToken },
+         body: formData,
+       });
+
+
+       const data = await response.json();
+
+
+       if (data.success) {
+         document.getElementById("thank-you-popup").style.display = "block";
+         form.reset();
+       } else {
+         alert("Something went wrong. Please try again.");
+       }
+     });
+   });
+ </script>
+</head>
+<body>
+<!-- Reward Info -->
+<section class="reward-detail">
+ {% if reward.image %}
+   <img src="{{ reward.image.url }}" alt="{{ reward.title }}" class="reward-detail-image">
+ {% endif %}
+ <h1>{{ reward.title }}</h1>
+ <p>{{ reward.description }}</p>
+ <p><strong>Amount:</strong> ₹{{ reward.amount }}</p>
+ <button onclick="scrollToPayment()" class="support-btn">Support This Reward</button>
+</section>
+
+<!-- Payment Section -->
+<section id="payment-section" class="payment-box">
+ <h2>Complete Your Support</h2>
+
+ <p>
+   <strong>Bank A/c:</strong>
+   <span id="account">{{ reward.bank_account }}</span>
+   <button type="button" onclick="copyText('account')">Copy</button>
+ </p>
+
+ <p>
+   <strong>IFSC:</strong>
+   <span id="ifsc">{{ reward.ifsc }}</span>
+   <button type="button" onclick="copyText('ifsc')">Copy</button>
+ </p>
+
+ {% if reward.upi %}
+   <a
+     href="upi://pay?pa={{ reward.upi }}&pn={{ reward.title|urlencode }}&am={{ reward.amount }}&cu=INR"
+     class="upi-button"
+     target="_blank"
+   >
+     Pay via UPI App
+   </a>
+   <p class="upi-note">This will open UPI apps like Google Pay or PhonePe.</p>
+ {% endif %}
+
+ {% if reward.qr_code %}
+   <img src="{{ reward.qr_code.url }}" alt="QR Code" class="qr-img">
+ {% endif %}
+
+ <!-- Support Form -->
+ <form id="support-form">
+   {% csrf_token %}
+   <h3>Fill your details to claim the reward:</h3>
+   <input type="text" name="name" placeholder="Your Name" required />
+   <input type="text" name="phone" placeholder="Your Phone Number" required />
+   <input type="text" name="transaction_id" placeholder="Transaction ID" required />
+   <button type="submit" class="submit-btn">Submit</button>
+ </form>
+
+ <!-- Share Section -->
+ <h3>Share this reward</h3>
+ <div class="social-share" style="display: flex; justify-content: flex-start;">
+   <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">Facebook</a> |
+   <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=Support this amazing reward!" target="_blank">Twitter</a> |
+   <a href="https://wa.me/?text={{ request.build_absolute_uri }}" target="_blank">WhatsApp</a>
+ </div>
+
+ <!-- Thank You Popup -->
+ <div id="thank-you-popup" style="display:none;" class="popup">
+   <div class="popup-content">
+     <p>🎉 Thank you for supporting this reward!</p>
+     <button onclick="closePopup()">Close</button>
+   </div>
+ </div>
+</section>
+</body>
+</html>
